@@ -51,7 +51,7 @@ func TestPermission(t *testing.T) {
 	opt.Trusted.Domains = append(opt.Trusted.Domains, u.Host, "256.256.256.256")
 	plugin := herbplugin.New()
 	plugin.SetPluginOptions(opt)
-	addon := New(plugin)
+	addon := Create(plugin)
 	req := addon.Create("GET", server.URL)
 	wg := &sync.WaitGroup{}
 	wg.Add(1)
@@ -84,7 +84,7 @@ func TestAddon(t *testing.T) {
 	opt.Trusted.Domains = append(opt.Trusted.Domains, u.Host, "256.256.256.256")
 	plugin := herbplugin.New()
 	plugin.SetPluginOptions(opt)
-	addon := New(plugin)
+	addon := Create(plugin)
 	req := addon.Create("GET", server.URL)
 	err = catch(func() {
 		req.ResponseStatusCode()
@@ -229,7 +229,7 @@ func TestRequest(t *testing.T) {
 	var values []string
 	var status int
 	plugin := herbplugin.New()
-	addon := New(plugin)
+	addon := Create(plugin)
 	req := addon.Create("GET", "")
 	if req.GetID() == "" {
 		t.Fatal(req)

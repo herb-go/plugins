@@ -35,7 +35,7 @@ type Addon struct {
 	Plugin      herbplugin.Plugin
 }
 
-func New(p herbplugin.Plugin) *Addon {
+func Create(p herbplugin.Plugin) *Addon {
 	return &Addon{
 		IDGenerator: DefaultIDGererator,
 		Permission:  Permission,

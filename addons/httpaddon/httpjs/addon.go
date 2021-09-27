@@ -1,4 +1,4 @@
-package httpjsplugin
+package httpjs
 
 import (
 	"github.com/dop251/goja"
@@ -137,9 +137,15 @@ func (a *Addon) NewRequest(call goja.FunctionCall, r *goja.Runtime) goja.Value {
 	req := a.Addon.Create(method, url)
 	return a.Builder(r, &Request{req})
 }
-func Create(p herbplugin.Plugin, a *httpaddon.Addon) *Addon {
+
+func (a *Addon) Convert(r *goja.Runtime) *goja.Object {
+	obj := r.NewObject()
+	obj.Set("NewRequest", a.NewRequest)
+	return obj
+}
+func Create(p herbplugin.Plugin) *Addon {
 	return &Addon{
-		Addon:   a,
+		Addon:   httpaddon.Create(p),
 		Builder: DefaultBuilder,
 	}
 }
