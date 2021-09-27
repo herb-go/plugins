@@ -1,4 +1,4 @@
-package httpplugin
+package httpaddon
 
 import (
 	"bytes"
@@ -12,13 +12,18 @@ import (
 
 const Permission = "http"
 
+const StatusReady = int(0)
+const StatusExecuting = int(1)
+const StatusSuccess = int(2)
+const StatusFail = int(3)
+
 type Request struct {
 	locker   sync.Mutex
 	ID       string
 	Preset   *Preset
+	Status   int
 	Response *Response
-	client   *http.Client
-	options  herbplugin.Options
+	addon    *Addon
 }
 
 func (r *Request) GetID() string {
@@ -151,12 +156,12 @@ func (r *Request) ResponseHeaderFields() []string {
 	sort.Strings(result)
 	return result
 }
-func (r *Request) IsExecuted() bool {
+func (r *Request) ExecuteStauts() int {
 	r.locker.Lock()
 	defer r.locker.Unlock()
-	return r.Response != nil
+	return r.Status
 }
-func (r *Request) MustAsyncExecute(callback func(error)) {
+func (r *Request) AsyncExecute(callback func(error)) {
 	go func() {
 		defer func() {
 			var err error
@@ -174,8 +179,14 @@ func (r *Request) MustAsyncExecute(callback func(error)) {
 	}()
 }
 func (r *Request) MustExecute() {
-	opt := r.options
-	if !opt.MustAuthorizePermission(Permission) {
+	r.locker.Lock()
+	if r.Status != StatusReady {
+		r.locker.Unlock()
+		panic(ErrRequestExecuted)
+	}
+	r.locker.Unlock()
+	opt := r.addon.Plugin.PluginOptions()
+	if !opt.MustAuthorizePermission(r.addon.Permission) {
 		panic(herbplugin.NewUnauthorizePermissionError(Permission))
 	}
 	u, err := url.Parse(r.Preset.URL)
@@ -197,31 +208,30 @@ func (r *Request) MustExecute() {
 	if err != nil {
 		panic(err)
 	}
-	resp, err := r.client.Do(req)
+	req.Header = r.Preset.Header
+	c := r.addon.Client
+	if c == nil {
+		c = http.DefaultClient
+	}
+	r.locker.Lock()
+	r.Status = StatusExecuting
+	r.locker.Unlock()
+	resp, err := c.Do(req)
 	if err != nil {
+		r.locker.Lock()
+		r.Status = StatusFail
+		r.locker.Unlock()
 		panic(err)
 	}
 	res, err := ConvertResponse(resp)
 	if err != nil {
+		r.locker.Lock()
+		r.Status = StatusFail
+		r.locker.Unlock()
 		panic(err)
 	}
 	r.locker.Lock()
+	r.Status = StatusSuccess
 	r.Response = res
 	r.locker.Unlock()
-}
-func (f *Factory) Create(opt herbplugin.Options, method string, url string) *Request {
-	req := &Request{
-		ID:       f.IDGenerator(),
-		Preset:   NewPreset(),
-		Response: nil,
-		client:   f.Client,
-	}
-	req.Preset.URL = url
-	req.Preset.Method = method
-	return req
-}
-
-type Factory struct {
-	IDGenerator func() string
-	Client      *http.Client
 }

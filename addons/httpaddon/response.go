@@ -1,4 +1,4 @@
-package httpplugin
+package httpaddon
 
 import (
 	"io"

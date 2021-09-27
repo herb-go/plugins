@@ -3,7 +3,7 @@ package httpjsplugin
 import (
 	"github.com/dop251/goja"
 	"github.com/herb-go/herbplugin"
-	"github.com/herb-go/plugins/httpplugin"
+	"github.com/herb-go/plugins/addons/httpaddon"
 )
 
 type Builder func(r *goja.Runtime, req *Request) *goja.Object
@@ -18,7 +18,7 @@ var DefaultBuilder = func(r *goja.Runtime, req *Request) *goja.Object {
 	obj.Set("GetBody", req.GetBody)
 	obj.Set("SetBody", req.SetBody)
 	obj.Set("FinishedAt", req.FinishedAt)
-	obj.Set("IsExecuted", req.IsExecuted)
+	obj.Set("ExecuteStatus", req.ExecuteStatus)
 	obj.Set("ResetHeader", req.ResetHeader)
 	obj.Set("SetHeader", req.SetHeader)
 	obj.Set("AddHeader", req.AddHeader)
@@ -36,7 +36,7 @@ var DefaultBuilder = func(r *goja.Runtime, req *Request) *goja.Object {
 }
 
 type Request struct {
-	Request *httpplugin.Request
+	Request *httpaddon.Request
 }
 
 func (req *Request) GetID(call goja.FunctionCall, r *goja.Runtime) goja.Value {
@@ -70,8 +70,8 @@ func (req *Request) FinishedAt(call goja.FunctionCall, r *goja.Runtime) goja.Val
 	return r.ToValue(req.Request.FinishedAt())
 
 }
-func (req *Request) IsExecuted(call goja.FunctionCall, r *goja.Runtime) goja.Value {
-	return r.ToValue(req.Request.IsExecuted())
+func (req *Request) ExecuteStatus(call goja.FunctionCall, r *goja.Runtime) goja.Value {
+	return r.ToValue(req.Request.ExecuteStauts())
 }
 func (req *Request) ResetHeader(call goja.FunctionCall, r *goja.Runtime) goja.Value {
 	req.Request.ResetHeader()
@@ -126,22 +126,20 @@ func (req *Request) Execute(call goja.FunctionCall, r *goja.Runtime) goja.Value 
 	return nil
 }
 
-type Factory struct {
-	Factory *httpplugin.Factory
+type Addon struct {
+	Addon   *httpaddon.Addon
 	Builder Builder
-	Plugin  herbplugin.Plugin
 }
 
-func (f *Factory) NewRequest(call goja.FunctionCall, r *goja.Runtime) goja.Value {
+func (a *Addon) NewRequest(call goja.FunctionCall, r *goja.Runtime) goja.Value {
 	method := call.Argument(0).String()
 	url := call.Argument(1).String()
-	req := f.Factory.Create(f.Plugin.PluginOptions(), method, url)
-	return f.Builder(r, &Request{req})
+	req := a.Addon.Create(method, url)
+	return a.Builder(r, &Request{req})
 }
-func CreateFactory(p herbplugin.Plugin, f *httpplugin.Factory) *Factory {
-	return &Factory{
-		Factory: f,
+func Create(p herbplugin.Plugin, a *httpaddon.Addon) *Addon {
+	return &Addon{
+		Addon:   a,
 		Builder: DefaultBuilder,
-		Plugin:  p,
 	}
 }
