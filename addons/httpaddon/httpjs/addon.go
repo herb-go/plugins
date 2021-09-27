@@ -140,7 +140,7 @@ func (a *Addon) NewRequest(call goja.FunctionCall, r *goja.Runtime) goja.Value {
 
 func (a *Addon) Convert(r *goja.Runtime) *goja.Object {
 	obj := r.NewObject()
-	obj.Set("NewRequest", a.NewRequest)
+	obj.Set("New", a.NewRequest)
 	return obj
 }
 func Create(p herbplugin.Plugin) *Addon {

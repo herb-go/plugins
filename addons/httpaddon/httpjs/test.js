@@ -1,5 +1,5 @@
 function test(url){
-    let req= HTTP.NewRequest("GET",url)
+    let req= HTTP.New("GET",url)
     req.GetID()
     req.GetURL()
     req.SetURL(url)
