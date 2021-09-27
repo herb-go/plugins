@@ -64,6 +64,9 @@ func TestPermission(t *testing.T) {
 		wg.Done()
 	})
 	wg.Wait()
+	if req.Status != StatusReady {
+		t.Fatal(req)
+	}
 }
 
 func TestAddon(t *testing.T) {
@@ -188,16 +191,22 @@ func TestAddon(t *testing.T) {
 		wg.Done()
 	})
 	wg.Wait()
+	if req.Status != StatusFail {
+		t.Fatal(req)
+	}
 	wg = &sync.WaitGroup{}
 	wg.Add(1)
 	req = addon.Create("GET", "http://wwww/")
 	req.AsyncExecute(func(err error) {
-		if verr := err.(*herbplugin.UnauthorizeDomainError); verr == nil {
+		if !herbplugin.IsUnauthorizeDomainError(err) {
 			panic(err)
 		}
 		wg.Done()
 	})
 	wg.Wait()
+	if req.Status != StatusReady {
+		t.Fatal(req)
+	}
 	wg = &sync.WaitGroup{}
 	wg.Add(1)
 	req = addon.Create("GET", "http://256.256.256.256/")
@@ -209,6 +218,9 @@ func TestAddon(t *testing.T) {
 		wg.Done()
 	})
 	wg.Wait()
+	if req.Status != StatusReady {
+		t.Fatal(req)
+	}
 }
 func TestRequest(t *testing.T) {
 	var data []byte

@@ -165,13 +165,9 @@ func (r *Request) AsyncExecute(callback func(error)) {
 	go func() {
 		defer func() {
 			var err error
-			var ok bool
 			r := recover()
 			if r != nil {
-				err, ok = r.(error)
-				if !ok {
-					err = nil
-				}
+				err, _ = r.(error)
 			}
 			go callback(err)
 		}()
