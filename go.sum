@@ -13,8 +13,6 @@ github.com/go-sourcemap/sourcemap v2.1.3+incompatible h1:W1iEw64niKVGogNgBN3ePyL
 github.com/go-sourcemap/sourcemap v2.1.3+incompatible/go.mod h1:F8jJfvm2KbVjc5NqelyYJmf/v5J0dwNLS2mL4sNA1Jg=
 github.com/herb-go/herbplugin v0.0.0-20210927153142-18e76e96c0cd h1:P0kK3n5+3/tyBa9D5ZIlUfkN90kX624xG0VR6l3LI6k=
 github.com/herb-go/herbplugin v0.0.0-20210927153142-18e76e96c0cd/go.mod h1:ZAitHirG9jH2bdbeRx19SSiJH1IO9xMFLSxHjs906vE=
-github.com/herb-go/plugins v0.0.0-20210927153148-fe665c223cfb h1:4w7frDYjANNaqUfQRkspDXBN6DWDa9LKtIlqv6H2GSo=
-github.com/herb-go/plugins v0.0.0-20210927153148-fe665c223cfb/go.mod h1:B0BpGrur0URXnKpbZAOEofuG3GD0rv6UKit0+0XQ+zs=
 github.com/kr/pretty v0.2.1/go.mod h1:ipq/a2n7PKx3OHsz4KJII5eveXtPO4qwEXGdVfWzfnI=
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=

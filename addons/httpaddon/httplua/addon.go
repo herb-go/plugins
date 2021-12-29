@@ -6,9 +6,9 @@ import (
 	lua "github.com/yuin/gopher-lua"
 )
 
-type Builder func(L *lua.LState, req *Request) int
+type Builder func(L *lua.LState, req *Request) *lua.LTable
 
-var DefaultBuilder = func(L *lua.LState, req *Request) int {
+var DefaultBuilder = func(L *lua.LState, req *Request) *lua.LTable {
 	t := L.NewTable()
 	t.RawSetString("GetID", L.NewFunction(req.GetID))
 	t.RawSetString("GetURL", L.NewFunction(req.GetURL))
@@ -32,8 +32,7 @@ var DefaultBuilder = func(L *lua.LState, req *Request) int {
 	t.RawSetString("ResponseHeaderValues", L.NewFunction(req.ResponseHeaderValues))
 	t.RawSetString("ResponseHeaderFields", L.NewFunction(req.ResponseHeaderFields))
 	t.RawSetString("Execute", L.NewFunction(req.Execute))
-	L.Push(t)
-	return 1
+	return t
 }
 
 type Request struct {
@@ -157,7 +156,8 @@ func (a *Addon) NewRequest(L *lua.LState) int {
 	method := L.ToString(1)
 	url := L.ToString(2)
 	req := a.Addon.Create(method, url)
-	return a.Builder(L, &Request{req})
+	L.Push(a.Builder(L, &Request{req}))
+	return 1
 }
 
 func (a *Addon) Convert(L *lua.LState) lua.LValue {
