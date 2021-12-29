@@ -1,4 +1,5 @@
-module plugins
+module 	github.com/herb-go/plugins
+
 
 go 1.16
 
