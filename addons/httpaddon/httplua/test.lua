@@ -1,5 +1,5 @@
 test=function(url)
-    local req= HTTP.New("GET",url)
+    local req= HTTP:New("GET",url)
     req.GetID()
     req.GetURL()
     req.SetURL(url)
