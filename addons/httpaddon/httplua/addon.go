@@ -1,6 +1,8 @@
 package httplua
 
 import (
+	"net/url"
+
 	"github.com/herb-go/herbplugin"
 	"github.com/herb-go/plugins/addons/httpaddon"
 	lua "github.com/yuin/gopher-lua"
@@ -152,6 +154,27 @@ type Addon struct {
 	Builder Builder
 }
 
+func (a *Addon) ParseURL(L *lua.LState) int {
+	rawurl := L.ToString(1)
+	u, err := url.Parse(rawurl)
+	if err != nil {
+		L.Push(lua.LNil)
+		return 1
+	}
+	result := L.NewTable()
+	result.RawSetString("Host", lua.LString(u.Host))
+	result.RawSetString("Hostname", lua.LString(u.Host))
+	result.RawSetString("Scheme", lua.LString(u.Scheme))
+	result.RawSetString("Path", lua.LString(u.Path))
+	result.RawSetString("Query", lua.LString(u.RawQuery))
+	result.RawSetString("User", lua.LString(u.User.Username()))
+	p, _ := u.User.Password()
+	result.RawSetString("Password", lua.LString(p))
+	result.RawSetString("Port", lua.LString(u.Port()))
+	result.RawSetString("Fragment", lua.LString(u.Fragment))
+	L.Push(result)
+	return 1
+}
 func (a *Addon) NewRequest(L *lua.LState) int {
 	method := L.ToString(1)
 	url := L.ToString(2)
@@ -163,6 +186,7 @@ func (a *Addon) NewRequest(L *lua.LState) int {
 func (a *Addon) Convert(L *lua.LState) lua.LValue {
 	t := L.NewTable()
 	t.RawSetString("New", L.NewFunction(a.NewRequest))
+	t.RawSetString("ParseURL", L.NewFunction(a.ParseURL))
 	return t
 }
 func Create(p herbplugin.Plugin) *Addon {

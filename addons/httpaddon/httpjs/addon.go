@@ -1,6 +1,8 @@
 package httpjs
 
 import (
+	"net/url"
+
 	"github.com/dop251/goja"
 	"github.com/herb-go/herbplugin"
 	"github.com/herb-go/plugins/addons/httpaddon"
@@ -131,6 +133,25 @@ type Addon struct {
 	Builder Builder
 }
 
+func (a *Addon) ParseURL(call goja.FunctionCall, r *goja.Runtime) goja.Value {
+	rawurl := call.Argument(0).String()
+	u, err := url.Parse(rawurl)
+	if err != nil {
+		return nil
+	}
+	result := r.NewObject()
+	result.Set("Host", u.Host)
+	result.Set("Hostname", u.Host)
+	result.Set("Scheme", u.Scheme)
+	result.Set("Path", u.Path)
+	result.Set("Query", u.RawQuery)
+	result.Set("User", u.User.Username())
+	p, _ := u.User.Password()
+	result.Set("Password", p)
+	result.Set("Port", u.Port())
+	result.Set("Fragment", u.Fragment)
+	return result
+}
 func (a *Addon) NewRequest(call goja.FunctionCall, r *goja.Runtime) goja.Value {
 	method := call.Argument(0).String()
 	url := call.Argument(1).String()
@@ -141,6 +162,7 @@ func (a *Addon) NewRequest(call goja.FunctionCall, r *goja.Runtime) goja.Value {
 func (a *Addon) Convert(r *goja.Runtime) *goja.Object {
 	obj := r.NewObject()
 	obj.Set("New", a.NewRequest)
+	obj.Set("ParseURL", a.ParseURL)
 	return obj
 }
 func Create(p herbplugin.Plugin) *Addon {
