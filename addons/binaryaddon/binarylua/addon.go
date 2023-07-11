@@ -1,4 +1,4 @@
-package httplua
+package binarylua
 
 import (
 	"github.com/herb-go/herbplugin"
