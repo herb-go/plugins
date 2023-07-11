@@ -18,6 +18,7 @@ var DefaultBuilder = func(r *goja.Runtime, req *Request) *goja.Object {
 	obj.Set("GetMethod", req.GetMethod)
 	obj.Set("SetMethod", req.SetMethod)
 	obj.Set("GetBody", req.GetBody)
+	obj.Set("GetBodyArrayBuffer", req.GetBodyArrayBuffer)
 	obj.Set("SetBody", req.SetBody)
 	obj.Set("FinishedAt", req.FinishedAt)
 	obj.Set("ExecuteStatus", req.ExecuteStatus)
@@ -30,6 +31,7 @@ var DefaultBuilder = func(r *goja.Runtime, req *Request) *goja.Object {
 	obj.Set("HeaderFields", req.HeaderFields)
 	obj.Set("ResponseStatusCode", req.ResponseStatusCode)
 	obj.Set("ResponseBody", req.ResponseBody)
+	obj.Set("ResponseBodyArrayBuffer", req.ResponseBodyArrayBuffer)
 	obj.Set("ResponseHeader", req.ResponseHeader)
 	obj.Set("ResponseHeaderValues", req.ResponseHeaderValues)
 	obj.Set("ResponseHeaderFields", req.ResponseHeaderFields)
@@ -63,10 +65,23 @@ func (req *Request) SetMethod(call goja.FunctionCall, r *goja.Runtime) goja.Valu
 func (req *Request) GetBody(call goja.FunctionCall, r *goja.Runtime) goja.Value {
 	return r.ToValue(string(req.Request.GetBody()))
 }
+func (req *Request) GetBodyArrayBuffer(call goja.FunctionCall, r *goja.Runtime) goja.Value {
+	return r.ToValue(r.NewArrayBuffer(req.Request.GetBody()))
+}
 func (req *Request) SetBody(call goja.FunctionCall, r *goja.Runtime) goja.Value {
 	req.Request.SetBody([]byte(call.Argument(0).String()))
 	return nil
-
+}
+func (req *Request) SetBodyArrayBuffer(call goja.FunctionCall, r *goja.Runtime) goja.Value {
+	data := call.Argument(0).Export()
+	if data != nil {
+		bs, ok := data.(goja.ArrayBuffer)
+		if !ok {
+			return r.ToValue(false)
+		}
+		req.Request.SetBody(bs.Bytes())
+	}
+	return nil
 }
 func (req *Request) FinishedAt(call goja.FunctionCall, r *goja.Runtime) goja.Value {
 	return r.ToValue(req.Request.FinishedAt())
@@ -110,7 +125,9 @@ func (req *Request) ResponseStatusCode(call goja.FunctionCall, r *goja.Runtime) 
 }
 func (req *Request) ResponseBody(call goja.FunctionCall, r *goja.Runtime) goja.Value {
 	return r.ToValue(string(req.Request.ResponseBody()))
-
+}
+func (req *Request) ResponseBodyArrayBuffer(call goja.FunctionCall, r *goja.Runtime) goja.Value {
+	return r.ToValue(r.NewArrayBuffer(req.Request.ResponseBody()))
 }
 func (req *Request) ResponseHeader(call goja.FunctionCall, r *goja.Runtime) goja.Value {
 	return r.ToValue(req.Request.ResponseHeader(call.Argument(0).String()))
