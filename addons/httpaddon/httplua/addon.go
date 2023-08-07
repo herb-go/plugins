@@ -15,6 +15,8 @@ var DefaultBuilder = func(L *lua.LState, req *Request) *lua.LTable {
 	t.RawSetString("GetID", L.NewFunction(req.GetID))
 	t.RawSetString("GetURL", L.NewFunction(req.GetURL))
 	t.RawSetString("SetURL", L.NewFunction(req.SetURL))
+	t.RawSetString("GetProxy", L.NewFunction(req.GetProxy))
+	t.RawSetString("SetProxy", L.NewFunction(req.SetProxy))
 	t.RawSetString("GetMethod", L.NewFunction(req.GetMethod))
 	t.RawSetString("SetMethod", L.NewFunction(req.SetMethod))
 	t.RawSetString("GetBody", L.NewFunction(req.GetBody))

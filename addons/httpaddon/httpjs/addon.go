@@ -15,6 +15,8 @@ var DefaultBuilder = func(r *goja.Runtime, req *Request) *goja.Object {
 	obj.Set("GetID", req.GetID)
 	obj.Set("GetURL", req.GetURL)
 	obj.Set("SetURL", req.SetURL)
+	obj.Set("GetProxy", req.GetProxy)
+	obj.Set("SetProxy", req.SetProxy)
 	obj.Set("GetMethod", req.GetMethod)
 	obj.Set("SetMethod", req.SetMethod)
 	obj.Set("GetBody", req.GetBody)
