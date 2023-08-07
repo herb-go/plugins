@@ -7,6 +7,7 @@ type Preset struct {
 	Method string
 	Header http.Header
 	URL    string
+	Proxy  string
 }
 
 func NewPreset() *Preset {
@@ -15,5 +16,6 @@ func NewPreset() *Preset {
 		Method: "",
 		Header: http.Header{},
 		URL:    "",
+		Proxy:  "",
 	}
 }

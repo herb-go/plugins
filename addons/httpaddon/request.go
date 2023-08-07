@@ -26,6 +26,16 @@ type Request struct {
 	addon    *Addon
 }
 
+func (r *Request) SetProxy(p string) {
+	r.locker.Lock()
+	defer r.locker.Unlock()
+	r.Preset.Proxy = p
+}
+func (r *Request) GetProxy() string {
+	r.locker.Lock()
+	defer r.locker.Unlock()
+	return r.Preset.Proxy
+}
 func (r *Request) GetID() string {
 	r.locker.Lock()
 	defer r.locker.Unlock()
@@ -204,12 +214,26 @@ func (r *Request) MustExecute() {
 	if err != nil {
 		panic(err)
 	}
+	r.locker.Lock()
 	req.Header = r.Preset.Header
+	r.locker.Unlock()
 	c := r.addon.Client
 	if c == nil {
-		c = http.DefaultClient
+		c = &http.Client{}
 	}
 	r.locker.Lock()
+	if r.Preset.Proxy != "" {
+		proxyurl, err := url.Parse(r.Preset.Proxy)
+		if err != nil {
+			r.locker.Unlock()
+			panic(err)
+		}
+		c.Transport = &http.Transport{
+			Proxy: http.ProxyURL(proxyurl),
+		}
+	} else {
+		c.Transport = nil
+	}
 	r.Status = StatusExecuting
 	r.locker.Unlock()
 	resp, err := c.Do(req)

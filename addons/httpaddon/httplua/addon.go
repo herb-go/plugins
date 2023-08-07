@@ -61,6 +61,14 @@ func (req *Request) SetURL(L *lua.LState) int {
 	req.Request.SetURL(L.ToString((1)))
 	return 0
 }
+func (req *Request) GetProxy(L *lua.LState) int {
+	L.Push(lua.LString(req.Request.GetProxy()))
+	return 1
+}
+func (req *Request) SetProxy(L *lua.LState) int {
+	req.Request.SetProxy(L.ToString((1)))
+	return 0
+}
 func (req *Request) GetMethod(L *lua.LState) int {
 	L.Push(lua.LString(req.Request.GetMethod()))
 	return 1

@@ -54,6 +54,14 @@ func (req *Request) SetURL(call goja.FunctionCall, r *goja.Runtime) goja.Value {
 	req.Request.SetURL(call.Argument(0).String())
 	return nil
 }
+func (req *Request) GetProxy(call goja.FunctionCall, r *goja.Runtime) goja.Value {
+	return r.ToValue(req.Request.GetProxy())
+}
+func (req *Request) SetProxy(call goja.FunctionCall, r *goja.Runtime) goja.Value {
+	req.Request.SetProxy(call.Argument(0).String())
+	return nil
+}
+
 func (req *Request) GetMethod(call goja.FunctionCall, r *goja.Runtime) goja.Value {
 	return r.ToValue(req.Request.GetMethod())
 }
