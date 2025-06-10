@@ -200,7 +200,7 @@ func (a *Addon) Convert(r *v8.Context) *v8.Value {
 	obj := v8.NewObjectTemplate(r.Isolate())
 	v8plugin.MustSetObjectMethod(r, obj, "New", a.NewRequest)
 	v8plugin.MustSetObjectMethod(r, obj, "ParseURL", a.ParseURL)
-	return v8plugin.MustObjectTemplateToValue(obj, r)
+	return v8plugin.MustObjectTemplateToValue(r, obj)
 }
 func Create(p herbplugin.Plugin) *Addon {
 	return &Addon{
