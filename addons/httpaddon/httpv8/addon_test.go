@@ -1,4 +1,4 @@
-package httpjs
+package httpv8
 
 import (
 	"context"
