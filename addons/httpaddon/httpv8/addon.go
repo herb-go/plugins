@@ -4,7 +4,7 @@ import (
 	"net/url"
 
 	v8plugin "github.com/herb-go/herbplugin/v8plugin"
-	v8 "rogchap.com/v8go"
+	v8 "github.com/herb-go/v8go"
 
 	"github.com/herb-go/herbplugin"
 	"github.com/herb-go/plugins/addons/httpaddon"
