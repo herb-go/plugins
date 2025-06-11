@@ -27,3 +27,4 @@ debug
 testconfig_test.go
 .vscode
 .directory
+__debug_*

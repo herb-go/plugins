@@ -61,7 +61,7 @@ func (req *Request) GetURL(call *v8.FunctionCallbackInfo) *v8.Value {
 func (req *Request) SetURL(call *v8.FunctionCallbackInfo) *v8.Value {
 	defer call.Release()
 	req.Request.SetURL(v8plugin.MustGetArg(call, 0).String())
-	return v8.Null(call.Context().Isolate())
+	return nil
 }
 func (req *Request) GetProxy(call *v8.FunctionCallbackInfo) *v8.Value {
 	defer call.Release()
@@ -70,7 +70,7 @@ func (req *Request) GetProxy(call *v8.FunctionCallbackInfo) *v8.Value {
 func (req *Request) SetProxy(call *v8.FunctionCallbackInfo) *v8.Value {
 	defer call.Release()
 	req.Request.SetProxy(v8plugin.MustGetArg(call, 0).String())
-	return v8.Null(call.Context().Isolate())
+	return nil
 }
 
 func (req *Request) GetMethod(call *v8.FunctionCallbackInfo) *v8.Value {
@@ -80,7 +80,7 @@ func (req *Request) GetMethod(call *v8.FunctionCallbackInfo) *v8.Value {
 func (req *Request) SetMethod(call *v8.FunctionCallbackInfo) *v8.Value {
 	defer call.Release()
 	req.Request.SetMethod(v8plugin.MustGetArg(call, 0).String())
-	return v8.Null(call.Context().Isolate())
+	return nil
 }
 func (req *Request) GetBody(call *v8.FunctionCallbackInfo) *v8.Value {
 	defer call.Release()
