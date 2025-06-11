@@ -19,8 +19,8 @@ github.com/go-sourcemap/sourcemap v2.1.3+incompatible h1:W1iEw64niKVGogNgBN3ePyL
 github.com/go-sourcemap/sourcemap v2.1.3+incompatible/go.mod h1:F8jJfvm2KbVjc5NqelyYJmf/v5J0dwNLS2mL4sNA1Jg=
 github.com/google/pprof v0.0.0-20230207041349-798e818bf904 h1:4/hN5RUoecvl+RmJRE2YxKWtnnQls6rQjjW5oV7qg2U=
 github.com/google/pprof v0.0.0-20230207041349-798e818bf904/go.mod h1:uglQLonpP8qtYCYyzA+8c/9qtqgA3qsXGYqCPKARAFg=
-github.com/herb-go/herbplugin v0.0.0-20250610132318-aaa796465bbf h1:35rlCOwNGOwsralPJT3oDNQZfvJx+rew+hFXzy5SlM4=
-github.com/herb-go/herbplugin v0.0.0-20250610132318-aaa796465bbf/go.mod h1:uF3NqEVgzQjZ8kPd9EhVuhotoO1NP8AEvTOxVN+So4E=
+github.com/herb-go/herbplugin v0.0.0-20250610185409-b367e450db29 h1:h1ooImmisLRRilbfrgJeX285C9ivy6S65rlZ/rVeeeE=
+github.com/herb-go/herbplugin v0.0.0-20250610185409-b367e450db29/go.mod h1:uF3NqEVgzQjZ8kPd9EhVuhotoO1NP8AEvTOxVN+So4E=
 github.com/ianlancetaylor/demangle v0.0.0-20220319035150-800ac71e25c2/go.mod h1:aYm2/VgdVmcIU8iMfdMvDMsRAQjcfZSKFby6HOFvi/w=
 github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORNo=
 github.com/kr/pretty v0.2.1/go.mod h1:ipq/a2n7PKx3OHsz4KJII5eveXtPO4qwEXGdVfWzfnI=
