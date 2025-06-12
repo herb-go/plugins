@@ -53,7 +53,7 @@ func TestAddon(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = fn.Call(v8.Undefined(p.Runtime.Isolate()), v8plugin.MustNewValue(p.Runtime, s.URL))
+	_, err = fn.Call(v8.Undefined(p.Runtime.Isolate()), v8plugin.MustNewGCValue(p.Runtime, s.URL))
 	if err != nil {
 		panic(err)
 	}

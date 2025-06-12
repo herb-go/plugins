@@ -51,12 +51,12 @@ type Request struct {
 
 func (req *Request) GetID(call *v8.FunctionCallbackInfo) *v8.Value {
 	defer call.Release()
-	return v8plugin.MustNewValue(call.Context(), req.Request.GetID())
+	return v8plugin.MustNewGCValue(call.Context(), req.Request.GetID())
 }
 
 func (req *Request) GetURL(call *v8.FunctionCallbackInfo) *v8.Value {
 	defer call.Release()
-	return v8plugin.MustNewValue(call.Context(), req.Request.GetURL())
+	return v8plugin.MustNewGCValue(call.Context(), req.Request.GetURL())
 }
 func (req *Request) SetURL(call *v8.FunctionCallbackInfo) *v8.Value {
 	defer call.Release()
@@ -65,7 +65,7 @@ func (req *Request) SetURL(call *v8.FunctionCallbackInfo) *v8.Value {
 }
 func (req *Request) GetProxy(call *v8.FunctionCallbackInfo) *v8.Value {
 	defer call.Release()
-	return v8plugin.MustNewValue(call.Context(), req.Request.GetProxy())
+	return v8plugin.MustNewGCValue(call.Context(), req.Request.GetProxy())
 }
 func (req *Request) SetProxy(call *v8.FunctionCallbackInfo) *v8.Value {
 	defer call.Release()
@@ -75,7 +75,7 @@ func (req *Request) SetProxy(call *v8.FunctionCallbackInfo) *v8.Value {
 
 func (req *Request) GetMethod(call *v8.FunctionCallbackInfo) *v8.Value {
 	defer call.Release()
-	return v8plugin.MustNewValue(call.Context(), req.Request.GetMethod())
+	return v8plugin.MustNewGCValue(call.Context(), req.Request.GetMethod())
 }
 func (req *Request) SetMethod(call *v8.FunctionCallbackInfo) *v8.Value {
 	defer call.Release()
@@ -84,7 +84,7 @@ func (req *Request) SetMethod(call *v8.FunctionCallbackInfo) *v8.Value {
 }
 func (req *Request) GetBody(call *v8.FunctionCallbackInfo) *v8.Value {
 	defer call.Release()
-	return v8plugin.MustNewValue(call.Context(), string(req.Request.GetBody()))
+	return v8plugin.MustNewGCValue(call.Context(), string(req.Request.GetBody()))
 }
 func (req *Request) SetBody(call *v8.FunctionCallbackInfo) *v8.Value {
 	defer call.Release()
@@ -94,12 +94,12 @@ func (req *Request) SetBody(call *v8.FunctionCallbackInfo) *v8.Value {
 
 func (req *Request) FinishedAt(call *v8.FunctionCallbackInfo) *v8.Value {
 	defer call.Release()
-	return v8plugin.MustNewValue(call.Context(), req.Request.FinishedAt())
+	return v8plugin.MustNewGCValue(call.Context(), req.Request.FinishedAt())
 
 }
 func (req *Request) ExecuteStatus(call *v8.FunctionCallbackInfo) *v8.Value {
 	defer call.Release()
-	return v8plugin.MustNewValue(call.Context(), int32(req.Request.ExecuteStauts()))
+	return v8plugin.MustNewGCValue(call.Context(), int32(req.Request.ExecuteStauts()))
 }
 func (req *Request) ResetHeader(call *v8.FunctionCallbackInfo) *v8.Value {
 	defer call.Release()
@@ -124,7 +124,7 @@ func (req *Request) DelHeader(call *v8.FunctionCallbackInfo) *v8.Value {
 }
 func (req *Request) GetHeader(call *v8.FunctionCallbackInfo) *v8.Value {
 	defer call.Release()
-	return v8plugin.MustNewValue(call.Context(), req.Request.GetHeader(v8plugin.MustGetArg(call, 0).String()))
+	return v8plugin.MustNewGCValue(call.Context(), req.Request.GetHeader(v8plugin.MustGetArg(call, 0).String()))
 
 }
 func (req *Request) HeaderValues(call *v8.FunctionCallbackInfo) *v8.Value {
@@ -132,7 +132,7 @@ func (req *Request) HeaderValues(call *v8.FunctionCallbackInfo) *v8.Value {
 	result := req.Request.HeaderValues(v8plugin.MustGetArg(call, 0).String())
 	var output = make([]*v8.Value, len(result))
 	for i, v := range result {
-		output[i] = v8plugin.MustNewValue(call.Context(), v)
+		output[i] = v8plugin.MustNewGCValue(call.Context(), v)
 	}
 	return v8plugin.MustNewArray(call.Context(), output)
 }
@@ -141,7 +141,7 @@ func (req *Request) HeaderFields(call *v8.FunctionCallbackInfo) *v8.Value {
 	result := req.Request.HeaderFields()
 	var output = make([]*v8.Value, len(result))
 	for i, v := range result {
-		output[i] = v8plugin.MustNewValue(call.Context(), v)
+		output[i] = v8plugin.MustNewGCValue(call.Context(), v)
 	}
 	return v8plugin.MustNewArray(call.Context(), output)
 
@@ -149,15 +149,15 @@ func (req *Request) HeaderFields(call *v8.FunctionCallbackInfo) *v8.Value {
 
 func (req *Request) ResponseStatusCode(call *v8.FunctionCallbackInfo) *v8.Value {
 	defer call.Release()
-	return v8plugin.MustNewValue(call.Context(), int32(req.Request.ResponseStatusCode()))
+	return v8plugin.MustNewGCValue(call.Context(), int32(req.Request.ResponseStatusCode()))
 }
 func (req *Request) ResponseBody(call *v8.FunctionCallbackInfo) *v8.Value {
 	defer call.Release()
-	return v8plugin.MustNewValue(call.Context(), string(req.Request.ResponseBody()))
+	return v8plugin.MustNewGCValue(call.Context(), string(req.Request.ResponseBody()))
 }
 func (req *Request) ResponseHeader(call *v8.FunctionCallbackInfo) *v8.Value {
 	defer call.Release()
-	return v8plugin.MustNewValue(call.Context(), req.Request.ResponseHeader(v8plugin.MustGetArg(call, 0).String()))
+	return v8plugin.MustNewGCValue(call.Context(), req.Request.ResponseHeader(v8plugin.MustGetArg(call, 0).String()))
 
 }
 func (req *Request) ResponseHeaderValues(call *v8.FunctionCallbackInfo) *v8.Value {
@@ -165,7 +165,7 @@ func (req *Request) ResponseHeaderValues(call *v8.FunctionCallbackInfo) *v8.Valu
 	result := req.Request.ResponseHeaderValues(v8plugin.MustGetArg(call, 0).String())
 	var output = make([]*v8.Value, len(result))
 	for i, v := range result {
-		output[i] = v8plugin.MustNewValue(call.Context(), v)
+		output[i] = v8plugin.MustNewGCValue(call.Context(), v)
 	}
 	return v8plugin.MustNewArray(call.Context(), output)
 }
@@ -174,7 +174,7 @@ func (req *Request) ResponseHeaderFields(call *v8.FunctionCallbackInfo) *v8.Valu
 	result := req.Request.ResponseHeaderFields()
 	var output = make([]*v8.Value, len(result))
 	for i, v := range result {
-		output[i] = v8plugin.MustNewValue(call.Context(), v)
+		output[i] = v8plugin.MustNewGCValue(call.Context(), v)
 	}
 	return v8plugin.MustNewArray(call.Context(), output)
 

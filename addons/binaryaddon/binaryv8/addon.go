@@ -26,7 +26,7 @@ func (a *Addon) Base64Encode(call *v8.FunctionCallbackInfo) *v8.Value {
 }
 func (a *Addon) Base64Decode(call *v8.FunctionCallbackInfo) *v8.Value {
 	defer call.Release()
-	v8plugin.MustNewValue(call.Context(), a.Addon.Base64Decode(v8plugin.MustGetArg(call, 0).String()))
+	v8plugin.MustNewGCValue(call.Context(), a.Addon.Base64Decode(v8plugin.MustGetArg(call, 0).String()))
 }
 func (a *Addon) Md5Sum(call *v8.FunctionCallbackInfo) *v8.Value {
 	defer call.Release()
