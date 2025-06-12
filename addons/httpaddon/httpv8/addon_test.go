@@ -7,10 +7,9 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/herb-go/plugins/addons/httpaddon"
-
 	"github.com/herb-go/herbplugin"
 	"github.com/herb-go/herbplugin/v8plugin"
+	"github.com/herb-go/plugins/addons/httpaddon"
 	v8 "github.com/herb-go/v8go"
 )
 
@@ -53,7 +52,13 @@ func TestAddon(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = fn.Call(v8.Undefined(p.Runtime.Isolate()), v8plugin.MustNewGCValue(p.Runtime, s.URL))
+	manager := v8plugin.NewManager(p.Runtime)
+	defer manager.Release()
+	v, err := v8.NewValue(p.Runtime.Isolate(), s.URL)
+	if err != nil {
+		panic(err)
+	}
+	_, err = fn.Call(fn, v)
 	if err != nil {
 		panic(err)
 	}
