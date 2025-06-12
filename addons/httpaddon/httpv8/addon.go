@@ -3,193 +3,180 @@ package httpv8
 import (
 	"net/url"
 
-	v8plugin "github.com/herb-go/herbplugin/v8plugin"
-	v8 "github.com/herb-go/v8go"
-
 	"github.com/herb-go/herbplugin"
 	"github.com/herb-go/plugins/addons/httpaddon"
+	v8js "github.com/jarlyyn/v8js"
 )
 
-type Builder func(r *v8.Context, req *Request) *v8.Value
+type Builder func(r *v8js.Context, req *Request) *v8js.JsValue
 
-var DefaultBuilder = func(r *v8.Context, req *Request) *v8.Value {
-	obj := v8.NewObjectTemplate(r.Isolate())
-	v8plugin.MustSetObjectMethod(r, obj, "GetID", req.GetID)
-	v8plugin.MustSetObjectMethod(r, obj, "GetURL", req.GetURL)
-	v8plugin.MustSetObjectMethod(r, obj, "SetURL", req.SetURL)
-	v8plugin.MustSetObjectMethod(r, obj, "GetProxy", req.GetProxy)
-	v8plugin.MustSetObjectMethod(r, obj, "SetProxy", req.SetProxy)
-	v8plugin.MustSetObjectMethod(r, obj, "GetMethod", req.GetMethod)
-	v8plugin.MustSetObjectMethod(r, obj, "SetMethod", req.SetMethod)
-	v8plugin.MustSetObjectMethod(r, obj, "GetBody", req.GetBody)
-	v8plugin.MustSetObjectMethod(r, obj, "SetBody", req.SetBody)
-	v8plugin.MustSetObjectMethod(r, obj, "FinishedAt", req.FinishedAt)
-	v8plugin.MustSetObjectMethod(r, obj, "ExecuteStatus", req.ExecuteStatus)
-	v8plugin.MustSetObjectMethod(r, obj, "ResetHeader", req.ResetHeader)
-	v8plugin.MustSetObjectMethod(r, obj, "SetHeader", req.SetHeader)
-	v8plugin.MustSetObjectMethod(r, obj, "AddHeader", req.AddHeader)
-	v8plugin.MustSetObjectMethod(r, obj, "DelHeader", req.DelHeader)
-	v8plugin.MustSetObjectMethod(r, obj, "GetHeader", req.GetHeader)
-	v8plugin.MustSetObjectMethod(r, obj, "HeaderValues", req.HeaderValues)
-	v8plugin.MustSetObjectMethod(r, obj, "HeaderFields", req.HeaderFields)
-	v8plugin.MustSetObjectMethod(r, obj, "ResponseStatusCode", req.ResponseStatusCode)
-	v8plugin.MustSetObjectMethod(r, obj, "ResponseBody", req.ResponseBody)
-	v8plugin.MustSetObjectMethod(r, obj, "ResponseHeader", req.ResponseHeader)
-	v8plugin.MustSetObjectMethod(r, obj, "ResponseHeaderValues", req.ResponseHeaderValues)
-	v8plugin.MustSetObjectMethod(r, obj, "ResponseHeaderFields", req.ResponseHeaderFields)
-	v8plugin.MustSetObjectMethod(r, obj, "Execute", req.Execute)
-	v, err := obj.NewInstance(r)
-	if err != nil {
-		panic(err)
-	}
-	return v.Value
+var DefaultBuilder = func(r *v8js.Context, req *Request) *v8js.JsValue {
+	obj := r.NewObject()
+	obj.SetObjectMethod(r, "GetID", req.GetID)
+	obj.SetObjectMethod(r, "GetURL", req.GetURL)
+	obj.SetObjectMethod(r, "SetURL", req.SetURL)
+	obj.SetObjectMethod(r, "GetProxy", req.GetProxy)
+	obj.SetObjectMethod(r, "SetProxy", req.SetProxy)
+	obj.SetObjectMethod(r, "GetMethod", req.GetMethod)
+	obj.SetObjectMethod(r, "SetMethod", req.SetMethod)
+	obj.SetObjectMethod(r, "GetBody", req.GetBody)
+	obj.SetObjectMethod(r, "SetBody", req.SetBody)
+	obj.SetObjectMethod(r, "FinishedAt", req.FinishedAt)
+	obj.SetObjectMethod(r, "ExecuteStatus", req.ExecuteStatus)
+	obj.SetObjectMethod(r, "ResetHeader", req.ResetHeader)
+	obj.SetObjectMethod(r, "SetHeader", req.SetHeader)
+	obj.SetObjectMethod(r, "AddHeader", req.AddHeader)
+	obj.SetObjectMethod(r, "DelHeader", req.DelHeader)
+	obj.SetObjectMethod(r, "GetHeader", req.GetHeader)
+	obj.SetObjectMethod(r, "HeaderValues", req.HeaderValues)
+	obj.SetObjectMethod(r, "HeaderFields", req.HeaderFields)
+	obj.SetObjectMethod(r, "ResponseStatusCode", req.ResponseStatusCode)
+	obj.SetObjectMethod(r, "ResponseBody", req.ResponseBody)
+	obj.SetObjectMethod(r, "ResponseHeader", req.ResponseHeader)
+	obj.SetObjectMethod(r, "ResponseHeaderValues", req.ResponseHeaderValues)
+	obj.SetObjectMethod(r, "ResponseHeaderFields", req.ResponseHeaderFields)
+	obj.SetObjectMethod(r, "Execute", req.Execute)
+	return obj
 }
 
 type Request struct {
 	Request *httpaddon.Request
 }
 
-func (req *Request) GetID(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
-	return v8plugin.MustReturn(call, req.Request.GetID())
+func (req *Request) GetID(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
+
+	return call.Context().NewValue(req.Request.GetID())
 }
 
-func (req *Request) GetURL(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
-	return v8plugin.MustReturn(call, req.Request.GetURL())
-}
-func (req *Request) SetURL(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
-	req.Request.SetURL(v8plugin.MustGetArg(call, 0).String())
-	return nil
-}
-func (req *Request) GetProxy(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
-	return v8plugin.MustReturn(call, req.Request.GetProxy())
-}
-func (req *Request) SetProxy(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
-	req.Request.SetProxy(v8plugin.MustGetArg(call, 0).String())
-	return nil
-}
+func (req *Request) GetURL(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
 
-func (req *Request) GetMethod(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
-	return v8plugin.MustReturn(call, req.Request.GetMethod())
+	return call.Context().NewValue(req.Request.GetURL())
 }
-func (req *Request) SetMethod(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
-	req.Request.SetMethod(v8plugin.MustGetArg(call, 0).String())
+func (req *Request) SetURL(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
+
+	req.Request.SetURL(call.GetArg(0).String())
 	return nil
 }
-func (req *Request) GetBody(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
-	return v8plugin.MustReturn(call, string(req.Request.GetBody()))
+func (req *Request) GetProxy(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
+
+	return call.Context().NewValue(req.Request.GetProxy())
 }
-func (req *Request) SetBody(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
-	req.Request.SetBody([]byte(v8plugin.MustGetArg(call, 0).String()))
+func (req *Request) SetProxy(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
+
+	req.Request.SetProxy(call.GetArg(0).String())
 	return nil
 }
 
-func (req *Request) FinishedAt(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
-	return v8plugin.MustReturn(call, req.Request.FinishedAt())
+func (req *Request) GetMethod(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
+
+	return call.Context().NewValue(req.Request.GetMethod())
+}
+func (req *Request) SetMethod(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
+
+	req.Request.SetMethod(call.GetArg(0).String())
+	return nil
+}
+func (req *Request) GetBody(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
+
+	return call.Context().NewValue(string(req.Request.GetBody()))
+}
+func (req *Request) SetBody(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
+
+	req.Request.SetBody([]byte(call.GetArg(0).String()))
+	return nil
+}
+
+func (req *Request) FinishedAt(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
+
+	return call.Context().NewValue(req.Request.FinishedAt())
 
 }
-func (req *Request) ExecuteStatus(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
-	return v8plugin.MustReturn(call, int32(req.Request.ExecuteStauts()))
+func (req *Request) ExecuteStatus(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
+
+	return call.Context().NewValue(int32(req.Request.ExecuteStauts()))
 }
-func (req *Request) ResetHeader(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
+func (req *Request) ResetHeader(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
+
 	req.Request.ResetHeader()
 	return nil
 }
-func (req *Request) SetHeader(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
-	req.Request.SetHeader(v8plugin.MustGetArg(call, 0).String(), v8plugin.MustGetArg(call, 1).String())
+func (req *Request) SetHeader(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
+
+	req.Request.SetHeader(call.GetArg(0).String(), call.GetArg(1).String())
 	return nil
 }
-func (req *Request) AddHeader(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
-	req.Request.AddHeader(v8plugin.MustGetArg(call, 0).String(), v8plugin.MustGetArg(call, 1).String())
+func (req *Request) AddHeader(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
+
+	req.Request.AddHeader(call.GetArg(0).String(), call.GetArg(1).String())
 	return nil
 }
-func (req *Request) DelHeader(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
-	req.Request.DelHeader(v8plugin.MustGetArg(call, 0).String())
+func (req *Request) DelHeader(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
+
+	req.Request.DelHeader(call.GetArg(0).String())
 	return nil
 
 }
-func (req *Request) GetHeader(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
-	return v8plugin.MustReturn(call, req.Request.GetHeader(v8plugin.MustGetArg(call, 0).String()))
+func (req *Request) GetHeader(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
+
+	return call.Context().NewValue(req.Request.GetHeader(call.GetArg(0).String()))
 
 }
-func (req *Request) HeaderValues(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
-	manager := v8plugin.NewManager(call.Context())
-	defer manager.Release()
-	result := req.Request.HeaderValues(v8plugin.MustGetArg(call, 0).String())
-	var output = make([]v8.Valuer, len(result))
+func (req *Request) HeaderValues(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
+
+	result := req.Request.HeaderValues(call.GetArg(0).String())
+	var output = make([]*v8js.JsValue, len(result))
 	for i, v := range result {
-		output[i] = manager.NewValue(v)
+		output[i] = call.Context().NewValue(v)
 	}
-	return v8plugin.MustNewArray(call.Context(), output)
+	return call.Context().NewArray(output...)
 }
-func (req *Request) HeaderFields(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
-	manager := v8plugin.NewManager(call.Context())
-	defer manager.Release()
+func (req *Request) HeaderFields(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
 
 	result := req.Request.HeaderFields()
-	var output = make([]v8.Valuer, len(result))
+	var output = make([]*v8js.JsValue, len(result))
 	for i, v := range result {
-		output[i] = manager.NewValue(v)
+		output[i] = call.Context().NewValue(v)
 	}
-	return v8plugin.MustNewArray(call.Context(), output)
+	return call.Context().NewArray(output...)
 
 }
 
-func (req *Request) ResponseStatusCode(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
-	return v8plugin.MustReturn(call, int32(req.Request.ResponseStatusCode()))
+func (req *Request) ResponseStatusCode(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
+
+	return call.Context().NewValue(int32(req.Request.ResponseStatusCode()))
 }
-func (req *Request) ResponseBody(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
-	return v8plugin.MustReturn(call, string(req.Request.ResponseBody()))
+func (req *Request) ResponseBody(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
+
+	return call.Context().NewValue(string(req.Request.ResponseBody()))
 }
-func (req *Request) ResponseHeader(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
-	return v8plugin.MustReturn(call, req.Request.ResponseHeader(v8plugin.MustGetArg(call, 0).String()))
+func (req *Request) ResponseHeader(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
+
+	return call.Context().NewValue(req.Request.ResponseHeader(call.GetArg(0).String()))
 
 }
-func (req *Request) ResponseHeaderValues(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
-	result := req.Request.ResponseHeaderValues(v8plugin.MustGetArg(call, 0).String())
-	manager := v8plugin.NewManager(call.Context())
-	defer manager.Release()
-	var output = make([]v8.Valuer, len(result))
+func (req *Request) ResponseHeaderValues(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
+
+	result := req.Request.ResponseHeaderValues(call.GetArg(0).String())
+
+	var output = make([]*v8js.JsValue, len(result))
 	for i, v := range result {
-		output[i] = manager.NewValue(v)
+		output[i] = call.Context().NewValue(v)
 	}
-	return v8plugin.MustNewArray(call.Context(), output)
+	return call.Context().NewArray(output...)
 }
-func (req *Request) ResponseHeaderFields(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
+func (req *Request) ResponseHeaderFields(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
+
 	result := req.Request.ResponseHeaderFields()
-	manager := v8plugin.NewManager(call.Context())
-	defer manager.Release()
-	var output = make([]v8.Valuer, len(result))
+
+	var output = make([]*v8js.JsValue, len(result))
 	for i, v := range result {
-		output[i] = manager.NewValue(v)
+		output[i] = call.Context().NewValue(v)
 	}
-	return v8plugin.MustNewArray(call.Context(), output)
+	return call.Context().NewArray(output...)
 
 }
-func (req *Request) Execute(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
+func (req *Request) Execute(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
+
 	req.Request.MustExecute()
 	return nil
 }
@@ -199,44 +186,40 @@ type Addon struct {
 	Builder Builder
 }
 
-func (a *Addon) ParseURL(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
+func (a *Addon) ParseURL(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
+
 	rawurl := call.Args()[0].String()
 	u, err := url.Parse(rawurl)
 	if err != nil {
 		return nil
 	}
-	result := v8.NewObjectTemplate(call.Context().Isolate())
-	result.Set("Host", u.Host)
-	result.Set("Hostname", u.Host)
-	result.Set("Scheme", u.Scheme)
-	result.Set("Path", u.Path)
-	result.Set("Query", u.RawQuery)
-	result.Set("User", u.User.Username())
+	result := call.Context().NewObject()
+	result.Set("Host", call.Context().NewValue(u.Host))
+	result.Set("Hostname", call.Context().NewValue(u.Host))
+	result.Set("Scheme", call.Context().NewValue(u.Scheme))
+	result.Set("Path", call.Context().NewValue(u.Path))
+	result.Set("Query", call.Context().NewValue(u.RawQuery))
+	result.Set("User", call.Context().NewValue(u.User.Username()))
 	p, _ := u.User.Password()
-	result.Set("Password", p)
-	result.Set("Port", u.Port())
-	result.Set("Fragment", u.Fragment)
-	obj, err := result.NewInstance(call.Context())
-	if err != nil {
-		panic(err)
-	}
-	return obj.Value
+	result.Set("Password", call.Context().NewValue(p))
+	result.Set("Port", call.Context().NewValue(u.Port()))
+	result.Set("Fragment", call.Context().NewValue(u.Fragment))
+	return result
 }
-func (a *Addon) NewRequest(call *v8.FunctionCallbackInfo) *v8.Value {
-	defer call.Release()
-	method := v8plugin.MustGetArg(call, 0).String()
-	url := v8plugin.MustGetArg(call, 1).String()
+func (a *Addon) NewRequest(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
+
+	method := call.GetArg(0).String()
+	url := call.GetArg(1).String()
 	req := a.Addon.Create(method, url)
 	return a.Builder(call.Context(), &Request{req})
 }
 
-func (a *Addon) Convert(r *v8.Context) *v8.Value {
-	obj := v8.NewObjectTemplate(r.Isolate())
-	v8plugin.MustSetObjectMethod(r, obj, "New", a.NewRequest)
-	v8plugin.MustSetObjectMethod(r, obj, "ParseURL", a.ParseURL)
+func (a *Addon) Convert(r *v8js.Context) *v8js.JsValue {
+	obj := r.NewObject()
+	obj.SetObjectMethod(r, "New", a.NewRequest)
+	obj.SetObjectMethod(r, "ParseURL", a.ParseURL)
 
-	return v8plugin.MustObject(obj.NewInstance(r)).Value
+	return obj
 }
 func Create(p herbplugin.Plugin) *Addon {
 	return &Addon{

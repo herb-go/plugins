@@ -10,7 +10,6 @@ import (
 	"github.com/herb-go/herbplugin"
 	"github.com/herb-go/herbplugin/v8plugin"
 	"github.com/herb-go/plugins/addons/httpaddon"
-	v8 "github.com/herb-go/v8go"
 )
 
 func TestAddon(t *testing.T) {
@@ -44,22 +43,7 @@ func TestAddon(t *testing.T) {
 	i.Modules = append(i.Modules, module)
 	p := v8plugin.MustCreatePlugin(i)
 	herbplugin.Lanuch(p, opt)
-	test, err := p.Runtime.Global().Get("test")
-	if err != nil {
-		t.Fatal(err)
-	}
-	fn, err := test.AsFunction()
-	if err != nil {
-		t.Fatal(err)
-	}
-	manager := v8plugin.NewManager(p.Runtime)
-	defer manager.Release()
-	v, err := v8.NewValue(p.Runtime.Isolate(), s.URL)
-	if err != nil {
-		panic(err)
-	}
-	_, err = fn.Call(fn, v)
-	if err != nil {
-		panic(err)
-	}
+	test := p.Runtime.Global().Get("test")
+	test.Call(test, p.Runtime.NewValue(s.URL))
+
 }
