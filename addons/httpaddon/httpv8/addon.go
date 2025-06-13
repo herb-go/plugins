@@ -45,12 +45,12 @@ type Request struct {
 
 func (req *Request) GetID(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
 
-	return call.Context().NewValue(req.Request.GetID())
+	return call.Context().NewString(req.Request.GetID())
 }
 
 func (req *Request) GetURL(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
 
-	return call.Context().NewValue(req.Request.GetURL())
+	return call.Context().NewString(req.Request.GetURL())
 }
 func (req *Request) SetURL(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
 
@@ -59,7 +59,7 @@ func (req *Request) SetURL(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
 }
 func (req *Request) GetProxy(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
 
-	return call.Context().NewValue(req.Request.GetProxy())
+	return call.Context().NewString(req.Request.GetProxy())
 }
 func (req *Request) SetProxy(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
 
@@ -69,7 +69,7 @@ func (req *Request) SetProxy(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
 
 func (req *Request) GetMethod(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
 
-	return call.Context().NewValue(req.Request.GetMethod())
+	return call.Context().NewString(req.Request.GetMethod())
 }
 func (req *Request) SetMethod(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
 
@@ -78,7 +78,7 @@ func (req *Request) SetMethod(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
 }
 func (req *Request) GetBody(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
 
-	return call.Context().NewValue(string(req.Request.GetBody()))
+	return call.Context().NewString(string(req.Request.GetBody()))
 }
 func (req *Request) SetBody(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
 
@@ -88,12 +88,12 @@ func (req *Request) SetBody(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
 
 func (req *Request) FinishedAt(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
 
-	return call.Context().NewValue(req.Request.FinishedAt())
+	return call.Context().NewInt64(req.Request.FinishedAt())
 
 }
 func (req *Request) ExecuteStatus(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
 
-	return call.Context().NewValue(int32(req.Request.ExecuteStauts()))
+	return call.Context().NewInt32(int32(req.Request.ExecuteStauts()))
 }
 func (req *Request) ResetHeader(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
 
@@ -118,7 +118,7 @@ func (req *Request) DelHeader(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
 }
 func (req *Request) GetHeader(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
 
-	return call.Context().NewValue(req.Request.GetHeader(call.GetArg(0).String()))
+	return call.Context().NewString(req.Request.GetHeader(call.GetArg(0).String()))
 
 }
 func (req *Request) HeaderValues(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
@@ -126,7 +126,7 @@ func (req *Request) HeaderValues(call *v8js.FunctionCallbackInfo) *v8js.JsValue 
 	result := req.Request.HeaderValues(call.GetArg(0).String())
 	var output = make([]*v8js.JsValue, len(result))
 	for i, v := range result {
-		output[i] = call.Context().NewValue(v)
+		output[i] = call.Context().NewString(v)
 	}
 	return call.Context().NewArray(output...)
 }
@@ -135,7 +135,7 @@ func (req *Request) HeaderFields(call *v8js.FunctionCallbackInfo) *v8js.JsValue 
 	result := req.Request.HeaderFields()
 	var output = make([]*v8js.JsValue, len(result))
 	for i, v := range result {
-		output[i] = call.Context().NewValue(v)
+		output[i] = call.Context().NewString(v)
 	}
 	return call.Context().NewArray(output...)
 
@@ -143,15 +143,15 @@ func (req *Request) HeaderFields(call *v8js.FunctionCallbackInfo) *v8js.JsValue 
 
 func (req *Request) ResponseStatusCode(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
 
-	return call.Context().NewValue(int32(req.Request.ResponseStatusCode()))
+	return call.Context().NewInt32(int32(req.Request.ResponseStatusCode()))
 }
 func (req *Request) ResponseBody(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
 
-	return call.Context().NewValue(string(req.Request.ResponseBody()))
+	return call.Context().NewString(string(req.Request.ResponseBody()))
 }
 func (req *Request) ResponseHeader(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
 
-	return call.Context().NewValue(req.Request.ResponseHeader(call.GetArg(0).String()))
+	return call.Context().NewString(req.Request.ResponseHeader(call.GetArg(0).String()))
 
 }
 func (req *Request) ResponseHeaderValues(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
@@ -160,7 +160,7 @@ func (req *Request) ResponseHeaderValues(call *v8js.FunctionCallbackInfo) *v8js.
 
 	var output = make([]*v8js.JsValue, len(result))
 	for i, v := range result {
-		output[i] = call.Context().NewValue(v)
+		output[i] = call.Context().NewString(v)
 	}
 	return call.Context().NewArray(output...)
 }
@@ -170,7 +170,7 @@ func (req *Request) ResponseHeaderFields(call *v8js.FunctionCallbackInfo) *v8js.
 
 	var output = make([]*v8js.JsValue, len(result))
 	for i, v := range result {
-		output[i] = call.Context().NewValue(v)
+		output[i] = call.Context().NewString(v)
 	}
 	return call.Context().NewArray(output...)
 
@@ -194,16 +194,16 @@ func (a *Addon) ParseURL(call *v8js.FunctionCallbackInfo) *v8js.JsValue {
 		return nil
 	}
 	result := call.Context().NewObject()
-	result.Set("Host", call.Context().NewValue(u.Host))
-	result.Set("Hostname", call.Context().NewValue(u.Host))
-	result.Set("Scheme", call.Context().NewValue(u.Scheme))
-	result.Set("Path", call.Context().NewValue(u.Path))
-	result.Set("Query", call.Context().NewValue(u.RawQuery))
-	result.Set("User", call.Context().NewValue(u.User.Username()))
+	result.Set("Host", call.Context().NewString(u.Host))
+	result.Set("Hostname", call.Context().NewString(u.Host))
+	result.Set("Scheme", call.Context().NewString(u.Scheme))
+	result.Set("Path", call.Context().NewString(u.Path))
+	result.Set("Query", call.Context().NewString(u.RawQuery))
+	result.Set("User", call.Context().NewString(u.User.Username()))
 	p, _ := u.User.Password()
-	result.Set("Password", call.Context().NewValue(p))
-	result.Set("Port", call.Context().NewValue(u.Port()))
-	result.Set("Fragment", call.Context().NewValue(u.Fragment))
+	result.Set("Password", call.Context().NewString(p))
+	result.Set("Port", call.Context().NewString(u.Port()))
+	result.Set("Fragment", call.Context().NewString(u.Fragment))
 	return result
 }
 func (a *Addon) NewRequest(call *v8js.FunctionCallbackInfo) *v8js.JsValue {

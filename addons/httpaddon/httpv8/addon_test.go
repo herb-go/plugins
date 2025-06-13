@@ -44,6 +44,6 @@ func TestAddon(t *testing.T) {
 	p := v8plugin.MustCreatePlugin(i)
 	herbplugin.Lanuch(p, opt)
 	test := p.Runtime.Global().Get("test")
-	test.Call(test, p.Runtime.NewValue(s.URL))
+	test.Call(test, p.Runtime.NewString(s.URL))
 
 }
