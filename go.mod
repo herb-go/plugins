@@ -4,7 +4,7 @@ go 1.16
 
 require (
 	github.com/dop251/goja v0.0.0-20250531102226-cb187b08699c
-	github.com/herb-go/herbplugin v0.0.0-20250807103229-11abaca65959
-	github.com/jarlyyn/v8js v0.0.0-20250807095614-935667058d1d
+	github.com/herb-go/herbplugin v0.0.0-20250815090745-364dd2b6126c
+	github.com/jarlyyn/v8js v0.0.0-20250815085811-8d8e9e806c23
 	github.com/yuin/gopher-lua v1.1.1
 )
