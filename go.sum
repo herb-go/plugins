@@ -21,11 +21,7 @@ github.com/google/pprof v0.0.0-20230207041349-798e818bf904 h1:4/hN5RUoecvl+RmJRE
 github.com/google/pprof v0.0.0-20230207041349-798e818bf904/go.mod h1:uglQLonpP8qtYCYyzA+8c/9qtqgA3qsXGYqCPKARAFg=
 github.com/herb-go/herbplugin v0.0.0-20250815090745-364dd2b6126c h1:VJy3QhDPWNIu4BSL4H5Ews38N2uusi/C2ce15pvMWic=
 github.com/herb-go/herbplugin v0.0.0-20250815090745-364dd2b6126c/go.mod h1:O2qnsTePKTaNSki0TsRvRZKtGwSvb1sVhCIB3eATPtY=
-github.com/herb-go/v8go v0.0.0-20250815084204-b4e73e7538ed h1:h99Iqp3HOhSd2js1ECmDOvk/JXqNR5EcCtr4t2rr2T0=
-github.com/herb-go/v8go v0.0.0-20250815084204-b4e73e7538ed/go.mod h1:NVUDicg84q21+o3zRyGsIxrm2I1leD5xj/XlF8qBuzU=
 github.com/ianlancetaylor/demangle v0.0.0-20220319035150-800ac71e25c2/go.mod h1:aYm2/VgdVmcIU8iMfdMvDMsRAQjcfZSKFby6HOFvi/w=
-github.com/jarlyyn/v8js v0.0.0-20250815085811-8d8e9e806c23 h1:9ee498PVRkUHTIwelM8K/EH3Rz1HGMAL9Q0FK6rgwqY=
-github.com/jarlyyn/v8js v0.0.0-20250815085811-8d8e9e806c23/go.mod h1:GKOcfkzS0HEn2sxng0rfW2r/65guIRG2YF4j7kCrzwI=
 github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORNo=
 github.com/kr/pretty v0.2.1/go.mod h1:ipq/a2n7PKx3OHsz4KJII5eveXtPO4qwEXGdVfWzfnI=
 github.com/kr/pretty v0.3.0/go.mod h1:640gp4NfQd8pI5XOwp5fnNeVWj67G7CFk/SaSQn7NBk=
